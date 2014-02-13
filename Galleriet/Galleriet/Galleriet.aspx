@@ -12,8 +12,28 @@
         <h1>Galleriet</h1>
         <asp:Panel ID="Gallery" runat="server" Visible="false">
 
-            <%-- Implementeras --%>
+            <asp:Panel ID="ThumbsPanel" runat="server">
+                           
+            <asp:Repeater ID="Repeater1" runat="server" ItemType="Galleriet.Model.FileData"  SelectMethod="Repeater1_GetData">
+                <HeaderTemplate>
+                    <a href="#">
+                </HeaderTemplate>
+                
+                <ItemTemplate>
 
+                    <asp:Image ID="Image1" runat="server" ImageUrl='<%#: Item.href %>' />
+                    
+
+                </ItemTemplate>
+
+                <FooterTemplate>
+                    </a>
+                </FooterTemplate>
+
+            </asp:Repeater>
+
+                </asp:Panel>
+            
         </asp:Panel>
         <asp:ValidationSummary ID="ValidationSummary1" runat="server" />
         <asp:FileUpload ID="FileUpload" runat="server" />
@@ -29,7 +49,7 @@
 
         <br />
         <br />
-        <asp:Button ID="Uppload" runat="server" Text="Ladda Upp" />
+        <asp:Button ID="Uppload" runat="server" Text="Ladda Upp" OnClick="Uppload_Click" />
 
 
     </div>
