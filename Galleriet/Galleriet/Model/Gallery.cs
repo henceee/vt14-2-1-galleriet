@@ -15,7 +15,7 @@ namespace Galleriet.Model
        private static string PhysicalUploadedImagesPath;
        private static Regex SanitizePath;
        private static string thumbsdirectory;
-       List<string> filenames = new List<string>();
+       List<string> filenames = new List<string>(100);
 
        static Gallery()
        {
@@ -44,16 +44,16 @@ namespace Galleriet.Model
                filenames.Add(fileinfo.Name);
            }
 
+           filenames.TrimExcess();
+
            return filenames.AsEnumerable();
-            
-        
+                    
         }
         
         bool ImageExist(string name){
 
             return File.Exists(Path.Combine(thumbsdirectory, name));
-            
-              
+                          
         }
 
         private bool ValidImage(Image image){
@@ -61,14 +61,11 @@ namespace Galleriet.Model
             return (image.RawFormat.Guid == System.Drawing.Imaging.ImageFormat.Gif.Guid ||
                     image.RawFormat.Guid == System.Drawing.Imaging.ImageFormat.Jpeg.Guid ||
                     image.RawFormat.Guid == System.Drawing.Imaging.ImageFormat.Png.Guid) ? true : false;
-
-            
+                        
         }
 
         public string SaveImage(Stream stream, string fileName){
-
-            
-            
+                        
             var image = System.Drawing.Image.FromStream(stream); // stream -> ström med bild
 
                         
@@ -76,49 +73,41 @@ namespace Galleriet.Model
             {
                 GetImageNames();
 
-                if (ImageExist(fileName) && ApprovedExtensions.IsMatch(fileName))
-                {
+                    if (ImageExist(fileName) && ApprovedExtensions.IsMatch(fileName))
+                    {
+                        string filewithoutext = Path.GetFileNameWithoutExtension(fileName);
 
-                    string filewithoutext = Path.GetFileNameWithoutExtension(fileName);
+                        int filecounter = 0;
 
-                    int filecounter = 0;
+                        string newfilename;
 
-                    string newfilename;
+                            do
+                            {
+                                filecounter++;
 
-                        do
-                        {
-                            filecounter++;
+                                string namewithoutExt = string.Format(filewithoutext + "({0})", filecounter);
 
-                            string namewithoutExt = string.Format(filewithoutext + "({0})", filecounter);
-
-                            newfilename = namewithoutExt + Path.GetExtension(fileName);
-
-
-                        } while (ImageExist(newfilename));
-
-                    fileName = newfilename;
-
-                }
-
-                    fileName = SanitizePath.Replace(fileName, string.Empty);
-                    var thumbnail = image.GetThumbnailImage(100, 75, null, System.IntPtr.Zero);
-                    thumbnail.Save(Path.Combine(thumbsdirectory, fileName));
-                    image.Save(Path.Combine(PhysicalUploadedImagesPath, fileName));
+                                newfilename = namewithoutExt + Path.GetExtension(fileName);
 
 
-                    return fileName;
+                            } while (ImageExist(newfilename));
+
+                        fileName = newfilename;
+
+                    }
+
+                fileName = SanitizePath.Replace(fileName, string.Empty);
+                var thumbnail = image.GetThumbnailImage(100, 75, null, System.IntPtr.Zero);
+                thumbnail.Save(Path.Combine(thumbsdirectory, fileName));
+                image.Save(Path.Combine(PhysicalUploadedImagesPath, fileName));
                 
-            }
-
-            else {
+                return fileName;
+                
+            } else {
 
                 throw new Exception();
             
-            }
-
-   
-}
-                  
-
+             }   
+        }       
     }
 }
