@@ -1,0 +1,38 @@
+﻿/*#ImgPanel {
+
+width: 400px;
+height: 375px;
+border: 1px solid gray;
+margin-bottom: 1%;
+
+}*/
+
+#ThumbsPanel {
+
+   
+    width: 400px;
+    height: 120px;
+    overflow: hidden;
+    
+}
+
+#Scrollable {
+       
+    overflow: auto;
+    white-space: nowrap;
+}
+
+#form1 {
+
+float: left;
+margin-left: 10%;
+
+}
+
+.red {
+
+    color:red;
+
+}
+    
+

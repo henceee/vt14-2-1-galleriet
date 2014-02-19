@@ -7,7 +7,9 @@ namespace Galleriet.Model
 {
     public class FileData
     {
-        public string href { get; set; }
+        public string src { get; set; }
+        public string name { get; set; }
+
 
     }
 }

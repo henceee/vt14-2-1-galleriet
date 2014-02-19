@@ -5,53 +5,69 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.IO;
-using System.Drawing;
 using Galleriet.Model;
 
 namespace Galleriet
 {
     public partial class Galleriet : System.Web.UI.Page
     {
-        Gallery gal;
+
+        private Gallery Gal
+        {
+            
+            get { return Session["SecretNumber"] as Gallery ?? (Gallery)(Session["SecretNumber"] = new Gallery()); }
+        }
 
         protected void Page_Load(object sender, EventArgs e)
         {
-           gal  = new Gallery();
+            Image1.Visible = (IsPostBack) ? true  : false;
+
+
+            Image1.ImageUrl = @"~\Content\Images\" + Request.QueryString["name"];
+            
+           
         }
 
-        protected void Uppload_Click(object sender, EventArgs e)
+        protected void Upload_Click(object sender, EventArgs e)
         {
             if (IsValid) {
 
                 if (FileUpload.HasFile) {
-                                       
 
-                    gal.SaveImage(FileUpload.FileContent, FileUpload.FileName);
 
-                    ThumbsPanel.Visible = true;
+                    Image1.ImageUrl = @"~\Content\Images\" + Gal.SaveImage(FileUpload.FileContent, FileUpload.FileName);
+
+                    Image1.Visible = true;
+
+                    //Response.Redirect(@"~/Galleriet.aspx?name="+  name);
+
+                    Sucess.Visible = true;
+
                 }
-            
+
             }
+                        
         }
-
-
         
-
-
-
+        
         public IEnumerable<dynamic> Repeater1_GetData()
         {
             var di = new DirectoryInfo(Server.MapPath("~/Content/Images/Thumbs"));
 
-            return (from fileinfo in di.GetFiles()
-                    select new FileData
+            return (from fi in di.GetFiles("*.jpg").Union(di.GetFiles("*.png").Union(di.GetFiles("*gif")))                    
+                    select new FileData                    
                     {
-                        href = fileinfo.DirectoryName
+                            src = fi.DirectoryName,
+                            name = fi.Name
+                            
 
                     }).AsEnumerable();
-
-            //return null;
+                    
         }
+
+      
+
+        
 
        
     }
