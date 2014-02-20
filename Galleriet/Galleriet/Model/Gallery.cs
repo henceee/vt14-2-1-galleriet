@@ -26,7 +26,7 @@ namespace Galleriet.Model
 
            var invalidChars = new string(Path.GetInvalidFileNameChars());
            SanitizePath = new Regex(string.Format("[{0}]", Regex.Escape(invalidChars)));
-           thumbsdirectory = Path.Combine(PhysicalUploadedImagesPath, @"Thumbs").ToString();
+           thumbsdirectory = Path.Combine(PhysicalUploadedImagesPath, "Thumbs").ToString();
 
                    
         }
@@ -34,20 +34,18 @@ namespace Galleriet.Model
 
         public IEnumerable<string> GetImageNames(){
 
-
            var di = new DirectoryInfo(thumbsdirectory);
 
+           
            FileInfo[] fi = di.GetFiles();
-
            foreach (FileInfo fileinfo in fi) {
-
                filenames.Add(fileinfo.Name);
+               
            }
 
            filenames.TrimExcess();
 
-           return filenames.AsEnumerable();
-                    
+           return filenames;
         }
         
         bool ImageExist(string name){
@@ -58,9 +56,9 @@ namespace Galleriet.Model
 
         private bool ValidImage(Image image){
 
-            return (image.RawFormat.Guid == System.Drawing.Imaging.ImageFormat.Gif.Guid ||
+            return image.RawFormat.Guid == System.Drawing.Imaging.ImageFormat.Gif.Guid ||
                     image.RawFormat.Guid == System.Drawing.Imaging.ImageFormat.Jpeg.Guid ||
-                    image.RawFormat.Guid == System.Drawing.Imaging.ImageFormat.Png.Guid) ? true : false;
+                    image.RawFormat.Guid == System.Drawing.Imaging.ImageFormat.Png.Guid;
                         
         }
 
@@ -103,6 +101,7 @@ namespace Galleriet.Model
                 
                 return fileName;
                 
+
             } else {
 
                 throw new Exception();

@@ -64,6 +64,13 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="error.aspx.cs">
+      <DependentUpon>error.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="error.aspx.designer.cs">
+      <DependentUpon>error.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Galleriet.aspx.cs">
       <DependentUpon>Galleriet.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -71,7 +78,6 @@
     <Compile Include="Galleriet.aspx.designer.cs">
       <DependentUpon>Galleriet.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Model\FileData.cs" />
     <Compile Include="Model\Gallery.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

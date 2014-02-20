@@ -19,22 +19,21 @@
         
         </div>
         
-            <asp:Image ID="Image1" runat="server" Visible="false" Width="400px" Height="375"/>
+            <asp:Image ID="Image1" runat="server"  Width="400px" Height="375"/>
            
                           
-            <asp:Repeater ID="Repeater1" runat="server" ItemType="Galleriet.Model.FileData"  SelectMethod="Repeater1_GetData">
+            <asp:Repeater ID="Repeater1" runat="server" ItemType="System.String"  SelectMethod="Repeater1_GetData">
                 <HeaderTemplate>
                     <div id="ThumbsPanel">
 
                     <div id="Scrollable">
                 </HeaderTemplate>
                 
-                <ItemTemplate>
+                <ItemTemplate>                   
                     
-                        <asp:ImageButton ID="ImageButton1" runat="server"                            
-                        ImageUrl='<%#: @"~\Content\Images\Thumbs\"+ Item.name %>'
-                        Width ="100px" Height="75px" CausesValidation="False" 
-                        PostBackUrl='<%#: @"~/Galleriet.aspx?name="+ Item.name %>' />
+                    <asp:HyperLink runat="server" 
+                        NavigateUrl='<%#: "~/Galleriet.aspx?name="+ Item %>'
+                        ImageUrl='<%#: "~/Content/Images/Thumbs/"+ Item %>' />
                    
                 </ItemTemplate>
                     
@@ -48,7 +47,7 @@
             
         
         <asp:ValidationSummary ID="ValidationSummary1" runat="server" CssClass="red" ForeColor="Red"/>
-         <asp:Label ID="Sucess" runat="server" Text="Uppladdningen lyckad!" Forecolor="White" BackColor="ForestGreen" Visible="false"  ></asp:Label>
+         <asp:Label ID="Success" runat="server" Text="Uppladdningen lyckad!" Forecolor="White" BackColor="ForestGreen" Visible="false" ></asp:Label>
         <br />
         <br />
 

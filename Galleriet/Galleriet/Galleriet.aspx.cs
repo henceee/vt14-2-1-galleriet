@@ -11,18 +11,26 @@ namespace Galleriet
 {
     public partial class Galleriet : System.Web.UI.Page
     {
-
+        
         private Gallery Gal
         {
             
-            get { return Session["SecretNumber"] as Gallery ?? (Gallery)(Session["SecretNumber"] = new Gallery()); }
+            get { return Session["Gallery"] as Gallery ?? (Gallery)(Session["Gallery"] = new Gallery()); }
         }
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            Image1.Visible = (IsPostBack) ? true  : false;
+           
+            Image1.Visible = (Request.QueryString["name"] != null) ? true : false;
 
+            if (Session["success"] != null) {
 
+                Success.Visible = true;
+                Session.Remove("success");
+            }
+           
+            //Success.Visible = (Request.QueryString["success"] == "true") ? true : false;
+            
             Image1.ImageUrl = @"~\Content\Images\" + Request.QueryString["name"];
             
            
@@ -34,41 +42,37 @@ namespace Galleriet
 
                 if (FileUpload.HasFile) {
 
+                    string name = Gal.SaveImage(FileUpload.FileContent, FileUpload.FileName);
 
-                    Image1.ImageUrl = @"~\Content\Images\" + Gal.SaveImage(FileUpload.FileContent, FileUpload.FileName);
-
+                    Image1.ImageUrl = @"~\Content\Images\" + name;
                     Image1.Visible = true;
 
-                    //Response.Redirect(@"~/Galleriet.aspx?name="+  name);
-
-                    Sucess.Visible = true;
-
+                    Session["success"] = true;
+                    Response.Redirect(@"~/Galleriet.aspx?name="+  name );
+                    
                 }
-
+               
             }
                         
         }
         
         
-        public IEnumerable<dynamic> Repeater1_GetData()
+        public IEnumerable<string> Repeater1_GetData()
         {
-            var di = new DirectoryInfo(Server.MapPath("~/Content/Images/Thumbs"));
 
-            return (from fi in di.GetFiles("*.jpg").Union(di.GetFiles("*.png").Union(di.GetFiles("*gif")))                    
-                    select new FileData                    
-                    {
-                            src = fi.DirectoryName,
-                            name = fi.Name
+            return Gal.GetImageNames();
+            //var di = new DirectoryInfo(Server.MapPath("~/Content/Images/Thumbs"));
+
+            //return (from fi in di.GetFiles("*.jpg").Union(di.GetFiles("*.png").Union(di.GetFiles("*gif")))                    
+            //        select new FileData                    
+            //        {
+            //                src = fi.DirectoryName,
+            //                name = fi.Name
                             
 
-                    }).AsEnumerable();
+            //        }).AsEnumerable();
                     
         }
 
-      
-
-        
-
-       
     }
 }
