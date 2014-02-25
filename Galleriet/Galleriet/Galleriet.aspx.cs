@@ -23,14 +23,13 @@ namespace Galleriet
            
             Image1.Visible = (Request.QueryString["name"] != null) ? true : false;
 
-            if (Session["success"] != null) {
+            if (Session["success"] as bool? == true) {
 
                 Success.Visible = true;
                 Session.Remove("success");
             }
            
-            //Success.Visible = (Request.QueryString["success"] == "true") ? true : false;
-            
+                      
             Image1.ImageUrl = @"~\Content\Images\" + Request.QueryString["name"];
             
            
@@ -61,16 +60,7 @@ namespace Galleriet
         {
 
             return Gal.GetImageNames();
-            //var di = new DirectoryInfo(Server.MapPath("~/Content/Images/Thumbs"));
-
-            //return (from fi in di.GetFiles("*.jpg").Union(di.GetFiles("*.png").Union(di.GetFiles("*gif")))                    
-            //        select new FileData                    
-            //        {
-            //                src = fi.DirectoryName,
-            //                name = fi.Name
-                            
-
-            //        }).AsEnumerable();
+            
                     
         }
 
