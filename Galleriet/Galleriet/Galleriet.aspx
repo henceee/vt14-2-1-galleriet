@@ -19,7 +19,7 @@
         
         </div>
         
-            <asp:Image ID="Image1" runat="server"  Width="400px" Height="375"/>
+            <asp:Image ID="Image1" runat="server"  Width="400px" Height="375" Visible="false"/>
            
                           
             <asp:Repeater ID="Repeater1" runat="server" ItemType="System.String"  SelectMethod="Repeater1_GetData">

@@ -21,18 +21,17 @@ namespace Galleriet
         protected void Page_Load(object sender, EventArgs e)
         {
            
-            Image1.Visible = (Request.QueryString["name"] != null) ? true : false;
-
             if (Session["success"] as bool? == true) {
 
                 Success.Visible = true;
                 Session.Remove("success");
             }
-           
-                      
-            Image1.ImageUrl = @"~\Content\Images\" + Request.QueryString["name"];
-            
-           
+
+            if (Request.QueryString["name"] != null)
+            {
+                Image1.Visible = true;
+                Image1.ImageUrl = @"~\Content\Images\" + Request.QueryString["name"];
+            }
         }
 
         protected void Upload_Click(object sender, EventArgs e)
